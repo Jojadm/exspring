@@ -70,5 +70,7 @@ public class AbisTrainingService implements TrainingService {
 		// TODO Auto-generated method stub
 
 	}
+	
+	
 
 }
