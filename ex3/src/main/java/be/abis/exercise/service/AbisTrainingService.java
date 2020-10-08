@@ -18,6 +18,7 @@ public class AbisTrainingService implements TrainingService {
 	
 	@Autowired
 	PersonRepository pr;
+	CourseService cs;
 	
 	@Override
 	public Person findPerson(int id) {

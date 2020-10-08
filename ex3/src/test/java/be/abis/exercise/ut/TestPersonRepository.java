@@ -1,4 +1,4 @@
-package be.abis.exercise.it;
+package be.abis.exercise.ut;
 
 import static org.junit.Assert.assertEquals;
 
