@@ -11,6 +11,7 @@ import be.abis.exercise.model.Person;
 
 public interface TrainingService {
 
+	//public CourseService getCs();
 	public Person findPerson(int id);
 	public ArrayList<Person> getAllPersons();
     public Person findPerson(String emailAddress, String passWord);

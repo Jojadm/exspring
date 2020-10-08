@@ -21,6 +21,8 @@ public class AbisCourseService implements CourseService {
 		return courses;
 	}
 
+	
+
 	@Override
 	public Course findCourse(int id) {
 		// TODO Auto-generated method stub
@@ -34,5 +36,7 @@ public class AbisCourseService implements CourseService {
 		Course course = cr.findCourse(shortTitle);
 		return course;
 	}
+
+	
 
 }

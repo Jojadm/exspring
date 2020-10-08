@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import be.abis.exercise.exception.EnrollException;
 import be.abis.exercise.model.Course;
 import be.abis.exercise.model.Person;
+import be.abis.exercise.repository.CourseRepository;
 import be.abis.exercise.repository.PersonRepository;
 
 @Service
@@ -18,15 +19,20 @@ public class AbisTrainingService implements TrainingService {
 	
 	@Autowired
 	PersonRepository pr;
+	@Autowired
 	CourseService cs;
 	
+	public CourseService getCs() {
+		return cs;
+	}
+
 	@Override
 	public Person findPerson(int id) {
 		// TODO Auto-generated method stub
 		Person p = pr.findPerson(id);
 		return p;
 	}
-
+	
 	@Override
 	public ArrayList<Person> getAllPersons() {
 		// TODO Auto-generated method stub
@@ -52,6 +58,7 @@ public class AbisTrainingService implements TrainingService {
 		// TODO Auto-generated method stub
 		pr.deletePerson(id);
 	}
+	
 
 	@Override
 	public void changePassword(Person p, String newPswd) throws IOException {

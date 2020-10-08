@@ -19,6 +19,7 @@ public class AbisTrainingServiceTest {
 	@Autowired
 	TrainingService ts;
 	
+	
 	@Before
 	public void setUp() throws Exception {
 	}
@@ -29,6 +30,11 @@ public class AbisTrainingServiceTest {
 		assertEquals("Mary", p.getFirstName());
 		assertEquals("Jones", p.getLastName());
 	}
+	
+	@Test
+	public void findCourseWithID7900() {
+		String title = ts.getCs().findCourse(7900).getLongTitle();
+		assertEquals("Workshop SQL",title);
+	}
 
 }
-
