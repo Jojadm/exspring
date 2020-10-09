@@ -15,10 +15,16 @@ public class AppController {
 	@Autowired
 	TrainingService ts;
 	
-	Person p = new Person();
+	Person p;
 
 	@GetMapping("/")
+	public String start(Model model) {
+		return "redirect:/login";
+	}
+	
+	@GetMapping("/login")
 	public String getLogin(Model model) {
+		p= new Person();
 		model.addAttribute("person", p);
 		return "login";
 	}
@@ -43,8 +49,8 @@ public class AppController {
 	}
 	
 	@PostMapping("/welcome")
-	public String postWelcome (Model model) {
-		return "redirect:/personAdmin";
+	public String postWelcome(Model model) {
+		return "redirect:/login";
 	}
 	
 	@GetMapping("/Course")
@@ -52,18 +58,37 @@ public class AppController {
 		return "course";
 	}
 	
-	@PostMapping("/Course")
-	public String postCourse (Model model) {
-		return "course";
-	}
+
 	@GetMapping("/personAdmin")
 	public String getPersonAdmin (Model model) {
+		int option = 0;
+		model.addAttribute("option", option);
 		return "personAdmin";
 	}
 	
 	@PostMapping("/personAdmin")
 	public String postPersonAdmin (Model model) {
+		System.out.println("Action");
 		return "personAdmin";
 	}
-}
+	@GetMapping("/changePassword")
+	public String changePassword(Model model) {
+		return "changePassword";
+	}
+	
+	@GetMapping("/addNewPerson")
+	public String addNewPerson(Model model) {
+		return "addNewPerson";
+	}
+	
+	@GetMapping("/searchPersons")
+	public String searchPersons(Model model) {
+		return "searchPersons";
+	}
+	
+	@GetMapping("/removePerson")
+	public String removePerson(Model model) {
+		return "removePerson";
+	}
+}	
 	
