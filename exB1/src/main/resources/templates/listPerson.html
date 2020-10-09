@@ -1,0 +1,12 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Person list</title>
+</head>
+<body>
+	<h1><span th:text="${person.firstName}"></span> <span th:text="${person.lastName}"></span></h1>
+	<form action="#" th:action="@{/searchPersons}" method="get">
+		<input type="submit" value="Back"/> 
+	</form>
+</body>
+</html>

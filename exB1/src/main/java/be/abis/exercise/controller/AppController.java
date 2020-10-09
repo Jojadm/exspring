@@ -1,5 +1,7 @@
 package be.abis.exercise.controller;
 
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -15,7 +17,7 @@ public class AppController {
 	@Autowired
 	TrainingService ts;
 	
-	Person p;
+	Person p, p2;
 
 	@GetMapping("/")
 	public String start(Model model) {
@@ -57,12 +59,9 @@ public class AppController {
 	public String getCourse (Model model) {
 		return "course";
 	}
-	
 
 	@GetMapping("/personAdmin")
 	public String getPersonAdmin (Model model) {
-		int option = 0;
-		model.addAttribute("option", option);
 		return "personAdmin";
 	}
 	
@@ -72,8 +71,18 @@ public class AppController {
 		return "personAdmin";
 	}
 	@GetMapping("/changePassword")
-	public String changePassword(Model model) {
+	public String getChangePassword(Model model, Person person) {
 		return "changePassword";
+	}
+	@PostMapping("/changePassword")
+	public String putChangePassword(Model model, Person person) {
+		try {
+		ts.changePassword(p, person.getPassword());
+		
+		} catch (IOException e) {
+			System.out.println("new password: " +person.getPassword());
+		}
+		return "redirect:/login";
 	}
 	
 	@GetMapping("/addNewPerson")
@@ -82,8 +91,21 @@ public class AppController {
 	}
 	
 	@GetMapping("/searchPersons")
-	public String searchPersons(Model model) {
+	public String getSearchPersons(Model model, Person person) {
 		return "searchPersons";
+	}
+	
+	@PostMapping("/searchPersons")
+	public String postSearchPersons(Model model, Person person) {
+		System.out.println("person id: " +person.getPersonId());
+		int id = person.getPersonId();
+		p2 = ts.findPerson(id);
+		return "redirect:/listPerson";
+	}
+	@GetMapping("/listPerson")
+	public String listPerson(Model model) {
+		model.addAttribute("person", p2);
+		return "listPerson";
 	}
 	
 	@GetMapping("/removePerson")
