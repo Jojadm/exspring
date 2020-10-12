@@ -1,0 +1,19 @@
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Show all courses</title>
+</head>
+<body>
+	<tr th:each="course: ${courses}">
+		<td th:text="${course.courseId}" />
+   		<td th:text="${course.shortTitle}" />
+    	<td th:text="${course.longTitle}" />
+    	<td th:text="${course.numberOfDays}" />
+    	<td th:text="${course.pricePerDay}" />
+    	<br>
+	</tr>
+	<br>
+	<form action="#" th:action="@{/searchForCourses}" method="get">
+		<input type="submit" value="Back"/> 
+	</form>
+</html>

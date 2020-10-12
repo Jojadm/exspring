@@ -10,6 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import be.abis.exercise.model.Course;
 import be.abis.exercise.model.Person;
 import be.abis.exercise.service.TrainingService;
 
@@ -21,7 +22,9 @@ public class AppController {
 	
 	Person p, p2;
 	List<Person> persons = new ArrayList<Person>();
-
+	List<Course> courses = new ArrayList<Course>();
+	String redirector; 
+	
 	@GetMapping("/")
 	public String start(Model model) {
 		return "redirect:/login";
@@ -37,13 +40,12 @@ public class AppController {
 	@PostMapping("/login") //first slash after basic definition in properties file
 	public String postLogin(Model model, Person person) { 
 		p = ts.findPerson(person.getEmailAddress(), person.getPassword());
-		System.out.println("person: " +p.getFirstName());
 		if (p != null) {
 			System.out.println("welcome");
 			return "redirect:/welcome";
 		} else {
-			System.out.println("login");
-			return "login";
+			redirector = "/login";
+			return "redirect:/generalErrorPage";
 		}
 	}
 	
@@ -100,10 +102,16 @@ public class AppController {
 		System.out.println("person id: " +person.getPersonId());
 		int id = person.getPersonId();
 		p = ts.findPerson(id);
+		if (p != null) {
 		persons.clear();
 		persons.add(p);
 		return "redirect:/listPerson";
+		} else {
+			redirector = "/searchPersons";
+			return "redirect:/generalErrorPage";
+		}
 	}
+	
 	@PostMapping("/searchAllPersons")
 	public String postSearchAllPersons(Model model) {
 		persons.clear();
@@ -131,7 +139,8 @@ public class AppController {
 		System.out.println("person: " +person.getFirstName());	
 		ts.addPerson(person);
 		} catch (IOException e) {
-			System.out.println("add person failed");
+			redirector = "/addNewPerson";
+			return "redirect:/generalErrorPage";
 		}
 		return "redirect:/confirmationNewPersonAdded";
 	}
@@ -158,7 +167,71 @@ public class AppController {
 	public String postRemovePerson(Model model, Person person) {
 		System.out.println("PostRemovePerson");
 		ts.deletePerson(person.getPersonId());
+		
 		return "redirect:/confirmationNewPersonRemoved";
+	}
+	@GetMapping("/searchForCourses")
+	public String getSearchForCourses(Model model) {
+		return "searchForCourses";
+	}
+	@GetMapping("/showAllCourses")
+	public String getShowAllCourses(Model model, Course course) {
+		courses = ts.getCs().findAllCourses();
+
+		return "redirect:listCourse";
+	}
+	@GetMapping("/listCourse")
+	public String getListCourse(Model model, Course course) {
+		model.addAttribute("courses", courses);
+		return "listCourse";
+	}
+	@GetMapping("/findCourseById")
+	public String getFindCourseById(Model model, Course course) {
+		return "findCourseById";
+	}
+	@PostMapping("/findCourseById")
+	public String PostFindCourseById(Model model, Course course) {
+		System.out.println("PostFindCourseById");
+		int id = Integer.parseInt(course.getCourseId());
+		System.out.println("Course id: " +id);
+		Course c = ts.getCs().findCourse(id);
+		if (c != null) {
+			System.out.println("Course: " +c.getLongTitle());
+			courses.clear();
+			courses.add(c);
+			return "redirect:/listCourse";
+		} else {
+			redirector = "/findCourseById";
+			return "redirect:/generalErrorPage" ;
+		}
+	}
+	@GetMapping("/findCourseByTitle")
+	public String getFindCourseByTitle(Model model, Course course) {
+		return "findCourseByTitle";
+	}
+	@PostMapping("/findCourseByTitle")
+	public String PostFindCourseByTitle(Model model, Course course) {
+		System.out.println("PostFindCourseByTitle");
+		String shortTitle = course.getShortTitle();
+		Course c = ts.getCs().findCourse(shortTitle);
+		if (c != null) {
+		System.out.println("Course: " +c.getLongTitle());
+		courses.clear();
+		courses.add(c);
+		return "redirect:/listCourse";
+		} else {
+			redirector = "/findCourseByTitle";
+			return "redirect:/generalErrorPage";
+		}
+			
+	}
+	@GetMapping("/generalErrorPage")
+	public String getGeneralErrorPage(Model model) {
+		return "generalErrorPage";
+	}
+	@PostMapping("/generalErrorPage")
+	public String postGeneralErrorPage(Model model) {
+		return "redirect:" + redirector;
 	}
 }	
 	
