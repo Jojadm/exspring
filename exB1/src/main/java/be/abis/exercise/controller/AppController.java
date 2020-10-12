@@ -1,6 +1,8 @@
 package be.abis.exercise.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -18,6 +20,7 @@ public class AppController {
 	TrainingService ts;
 	
 	Person p, p2;
+	List<Person> persons = new ArrayList<Person>();
 
 	@GetMapping("/")
 	public String start(Model model) {
@@ -62,12 +65,13 @@ public class AppController {
 
 	@GetMapping("/personAdmin")
 	public String getPersonAdmin (Model model) {
+		System.out.println("getPersonAdmin");
 		return "personAdmin";
 	}
 	
 	@PostMapping("/personAdmin")
 	public String postPersonAdmin (Model model) {
-		System.out.println("Action");
+		System.out.println("postPersonAdmin");
 		return "personAdmin";
 	}
 	@GetMapping("/changePassword")
@@ -82,14 +86,10 @@ public class AppController {
 		} catch (IOException e) {
 			System.out.println("new password: " +person.getPassword());
 		}
-		return "redirect:/login";
+		return "redirect:/confirmation";
 	}
 	
-	@GetMapping("/addNewPerson")
-	public String addNewPerson(Model model) {
-		return "addNewPerson";
-	}
-	
+
 	@GetMapping("/searchPersons")
 	public String getSearchPersons(Model model, Person person) {
 		return "searchPersons";
@@ -99,18 +99,66 @@ public class AppController {
 	public String postSearchPersons(Model model, Person person) {
 		System.out.println("person id: " +person.getPersonId());
 		int id = person.getPersonId();
-		p2 = ts.findPerson(id);
+		p = ts.findPerson(id);
+		persons.clear();
+		persons.add(p);
 		return "redirect:/listPerson";
 	}
+	@PostMapping("/searchAllPersons")
+	public String postSearchAllPersons(Model model) {
+		persons.clear();
+		persons = ts.getAllPersons();
+		return "redirect:/listPerson";
+	}
+	
 	@GetMapping("/listPerson")
-	public String listPerson(Model model) {
-		model.addAttribute("person", p2);
+	public String getListPerson(Model model) {
+		model.addAttribute("persons", persons);
 		return "listPerson";
 	}
 	
+	@GetMapping("/addNewPerson")
+	public String getAddNewPerson(Model model, Person person) {
+		person = null;
+		System.out.println("getAddNewPerson");
+		return "addNewPerson";
+	}
+	
+	@PostMapping("/addNewPerson")
+	public String postAddNewPerson(Model model, Person person) {
+		System.out.println("PostAddNewPerson");
+		try {
+		System.out.println("person: " +person.getFirstName());	
+		ts.addPerson(person);
+		} catch (IOException e) {
+			System.out.println("add person failed");
+		}
+		return "redirect:/confirmationNewPersonAdded";
+	}
+	@GetMapping("/confirmation")
+	public String getConfirmation(Model model) {
+		System.out.println("getConfirmation");
+		return "confirmation";
+	}
+	@GetMapping("/confirmationNewPersonAdded")
+	public String getConfirmationNewPersonAdded(Model model) {
+		return "confirmationNewPersonAdded";
+	}
+	
+	@GetMapping("/confirmationNewPersonRemoved")
+	public String getConfirmationNewPersonRemoved(Model model) {
+		return "confirmationNewPersonRemoved";
+	}
+	
 	@GetMapping("/removePerson")
-	public String removePerson(Model model) {
+	public String getRemovePerson(Model model, Person person) {
 		return "removePerson";
+	}
+	@PostMapping("/removePerson")
+	public String postRemovePerson(Model model, Person person) {
+		System.out.println("PostRemovePerson");
+		ts.deletePerson(person.getPersonId());
+		return "redirect:/confirmationNewPersonRemoved";
 	}
 }	
 	

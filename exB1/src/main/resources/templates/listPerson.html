@@ -4,7 +4,11 @@
 <title>Person list</title>
 </head>
 <body>
-	<h1><span th:text="${person.firstName}"></span> <span th:text="${person.lastName}"></span></h1>
+	<tr th:each="person: ${persons}">
+   		<td th:text="${person.firstName}" />
+    	<td th:text="${person.lastName}" />
+    	<br>
+	</tr>
 	<form action="#" th:action="@{/searchPersons}" method="get">
 		<input type="submit" value="Back"/> 
 	</form>

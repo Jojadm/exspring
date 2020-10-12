@@ -5,6 +5,15 @@
 </head>
 <body>
 	<h1>Remove a person</h1>
+	<form action="#" th:action="@{/removePerson}" th:object="${person}" method="post">
+	<table>
+		<tr>
+			<td>Person id: </td>
+			<td><input type="text" th:field="*{personId}" /></td>
+		 </tr>
+	</table> 
+	<input type="submit" value="Submit"/> 
+	</form>
 	<form action="#" th:action="@{/personAdmin}" method="post">
 		<input type="submit" value="Back"/> 
 	</form>

@@ -5,6 +5,42 @@
 </head>
 <body>
 	<h1>Add new person</h1>
+	
+	<form action="#" th:action="@{/addNewPerson}" 
+		th:object="${person}" method="post">
+	<table>
+		<tr>
+			<td>Person id:</td>
+			<td><input type="text" th:field="*{personId}" /></td></tr>
+			<td>First name:</td>
+			<td><input type="text" th:field="*{firstName}" /></td> </tr> 
+			<td>Last name:</td>
+			<td><input type="text" th:field="*{lastName}" /></td></tr> 
+			<td>Age:</td>
+			<td><input type="text" th:field="*{age}" /></td></tr> 
+			<td>Email address:</td>
+			<td><input type="text" th:field="*{emailAddress}" /></td></tr> 
+			<td>Language:</td>
+			<td><input type="text" th:field="*{language}" /></td></tr> 
+			<td>Company</td></tr>
+			<td>	Company name:</td>
+			<td><input type="text" th:field="*{company.name}" /></td> </tr> 
+			<td>	Telephone number:</td>
+			<td><input type="text" th:field="*{company.telephoneNumber}" /></td> </tr> 
+			<td>	VAT number:</td>
+			<td><input type="text" th:field="*{company.vatNr}" /></td> </tr> 
+			<td>Company address</td></tr>
+			<td>	Street:</td>
+			<td><input type="text" th:field="*{company.address.street}" /></td> </tr> 
+			<td>	Nr:</td>
+			<td><input type="text" th:field="*{company.address.nr}" /></td> </tr>
+			<td>	Zipcode:</td>
+			<td><input type="text" th:field="*{company.address.zipcode}" /></td> </tr>  
+			<td>	Town:</td>
+			<td><input type="text" th:field="*{company.address.town}" /></td> </tr> 
+	 </table>
+	<input type="submit" value="Submit"/> 
+	</form>
 	<form action="#" th:action="@{/personAdmin}" method="post">
 		<input type="submit" value="Back"/> 
 	</form>
