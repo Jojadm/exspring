@@ -20,8 +20,17 @@
 			<td><input type="text" th:field="*{age}" /></td></tr> 
 			<td>Email address:</td>
 			<td><input type="text" th:field="*{emailAddress}" /></td></tr> 
+			
+			
 			<td>Language:</td>
-			<td><input type="text" th:field="*{language}" /></td></tr> 
+           	<td><select name="languages" id="languages" th:field="*{language}">
+  				<option value="NL">Dutch</option>
+  				<option value="FR">French</option>
+  				<option value="EN">English</option>
+			</select></td></tr>
+      					 
+			<td>Choose a password:</td>
+			<td><input type="password" th:field="*{password}" /></td></tr> 
 			<td>Company</td></tr>
 			<td>	Company name:</td>
 			<td><input type="text" th:field="*{company.name}" /></td> </tr> 

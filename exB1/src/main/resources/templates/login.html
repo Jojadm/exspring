@@ -5,14 +5,23 @@
 </head>
 <body>
 	<h1>Login</h1>
+	<!--  action # 
+	 	  th:action="@{/login}  // (@=URL)
+	 	  th:object="${person}	// ($=variable) object 'person' is parameter to pass to controller method
+	 	  method="post
+	 	  (* =selection expression)
+	 	  Selection expressions are just like variable expressions, except they will be executed 
+	 	  on a previously selected object instead of the whole context variables map.
+	 	  The object they act on is specified by a th:object attribute
+	-->
 	<form action="#" th:action="@{/login}" 
-		th:object="${person}" method="post">
+		th:object="${person}" method="post"> 
 	<table>
 		<tr>
 			<td>Emailaddress:</td>
 			<td><input type="text" th:field="*{emailAddress}" /></td> </tr> 
 			<td>password:</td>
-			<td><input type="text" th:field="*{password}" /></td></tr> 
+			<td><input type="password" th:field="*{password}" /></td></tr> 
 	 </table>
 	<input type="submit" value="Login"/> 
 	</form>

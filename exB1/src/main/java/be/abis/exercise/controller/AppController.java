@@ -20,27 +20,40 @@ public class AppController {
 	@Autowired
 	TrainingService ts;
 	
-	Person p, p2;
-	List<Person> persons = new ArrayList<Person>();
-	List<Course> courses = new ArrayList<Course>();
+	Person loginp, p;
+	List<Person> persons;
+	List<Course> courses;
 	String redirector; 
 	
-	@GetMapping("/")
-	public String start(Model model) {
+	//*****************************************************************************************************
+
+	@GetMapping("/") //first slash after basic definition in properties file
+	public String start() { //empty model (or no model) : no data to pass through
 		return "redirect:/login";
 	}
 	
+	//the model works a container that contains the data of the application. 
+	// Here, a data can be in any form such as objects, strings, information from the database, etc.
+	// The object of HttpServletRequest reads the information provided by the user and pass it to the 
+	// Model interface. Now, a view page easily accesses the data from the model part.
+	// The HttpServletRequest is used to read the HTML form data provided by the user.
+	// The Model contains the request data and provides it to view page.
+
+	//*****************************************************************************************************
+
 	@GetMapping("/login")
-	public String getLogin(Model model) {
-		p= new Person();
-		model.addAttribute("person", p);
-		return "login";
+	public String getLogin(Model model) { 
+		// Model needs to pass object 'person' because person object is defined on the html page 
+		loginp = new Person();
+		model.addAttribute("person", loginp);
+		return "login"; // view
 	}
 		
-	@PostMapping("/login") //first slash after basic definition in properties file
+	@PostMapping("/login") 
 	public String postLogin(Model model, Person person) { 
-		p = ts.findPerson(person.getEmailAddress(), person.getPassword());
-		if (p != null) {
+		// you can use getters to get data from the person object that's been entered in the html page
+		loginp = ts.findPerson(person.getEmailAddress(), person.getPassword());
+		if (loginp != null) {
 			System.out.println("welcome");
 			return "redirect:/welcome";
 		} else {
@@ -49,9 +62,13 @@ public class AppController {
 		}
 	}
 	
+	//*****************************************************************************************************
+	
 	@GetMapping("/welcome")
 	public String getWelcome(Model model) {
-		model.addAttribute("person", p);
+		// no person object passed because no object is defined on the page
+		// <span th:text="${person.firstName}"></span>
+		model.addAttribute("person", loginp); 
 		return "welcome";
 	}
 	
@@ -60,10 +77,14 @@ public class AppController {
 		return "redirect:/login";
 	}
 	
+	//*****************************************************************************************************
+
 	@GetMapping("/Course")
 	public String getCourse (Model model) {
 		return "course";
 	}
+
+	//*****************************************************************************************************
 
 	@GetMapping("/personAdmin")
 	public String getPersonAdmin (Model model) {
@@ -76,12 +97,15 @@ public class AppController {
 		System.out.println("postPersonAdmin");
 		return "personAdmin";
 	}
+	
+	//*****************************************************************************************************
+
 	@GetMapping("/changePassword")
 	public String getChangePassword(Model model, Person person) {
 		return "changePassword";
 	}
 	@PostMapping("/changePassword")
-	public String putChangePassword(Model model, Person person) {
+	public String postChangePassword(Model model, Person person) {
 		try {
 		ts.changePassword(p, person.getPassword());
 		
@@ -91,19 +115,22 @@ public class AppController {
 		return "redirect:/confirmation";
 	}
 	
+	//*****************************************************************************************************
 
 	@GetMapping("/searchPersons")
-	public String getSearchPersons(Model model, Person person) {
+	public String getSearchPersons(Model model) {
+		p = new Person();
+		model.addAttribute("person", p);
 		return "searchPersons";
 	}
 	
 	@PostMapping("/searchPersons")
 	public String postSearchPersons(Model model, Person person) {
 		System.out.println("person id: " +person.getPersonId());
+		persons = new ArrayList<Person>();
 		int id = person.getPersonId();
 		p = ts.findPerson(id);
 		if (p != null) {
-		persons.clear();
 		persons.add(p);
 		return "redirect:/listPerson";
 		} else {
@@ -111,30 +138,34 @@ public class AppController {
 			return "redirect:/generalErrorPage";
 		}
 	}
-	
-	@PostMapping("/searchAllPersons")
-	public String postSearchAllPersons(Model model) {
-		persons.clear();
+
+	//*****************************************************************************************************
+
+	@GetMapping("/searchAllPersons")
+	public String getSearchAllPersons(Model model) {
 		persons = ts.getAllPersons();
 		return "redirect:/listPerson";
 	}
-	
+
+	//*****************************************************************************************************
+
 	@GetMapping("/listPerson")
 	public String getListPerson(Model model) {
 		model.addAttribute("persons", persons);
 		return "listPerson";
 	}
-	
+
+	//*****************************************************************************************************
+
 	@GetMapping("/addNewPerson")
-	public String getAddNewPerson(Model model, Person person) {
-		person = null;
-		System.out.println("getAddNewPerson");
+	public String getAddNewPerson(Model model) {
+		p = new Person();
+		model.addAttribute("person",p);
 		return "addNewPerson";
 	}
 	
 	@PostMapping("/addNewPerson")
 	public String postAddNewPerson(Model model, Person person) {
-		System.out.println("PostAddNewPerson");
 		try {
 		System.out.println("person: " +person.getFirstName());	
 		ts.addPerson(person);
@@ -144,60 +175,86 @@ public class AppController {
 		}
 		return "redirect:/confirmationNewPersonAdded";
 	}
+	
+	//*****************************************************************************************************
+
 	@GetMapping("/confirmation")
 	public String getConfirmation(Model model) {
 		System.out.println("getConfirmation");
 		return "confirmation";
 	}
+	
+	//*****************************************************************************************************
+
 	@GetMapping("/confirmationNewPersonAdded")
 	public String getConfirmationNewPersonAdded(Model model) {
 		return "confirmationNewPersonAdded";
 	}
 	
+	//*****************************************************************************************************
+
 	@GetMapping("/confirmationNewPersonRemoved")
 	public String getConfirmationNewPersonRemoved(Model model) {
 		return "confirmationNewPersonRemoved";
 	}
-	
+
+	//*****************************************************************************************************
+
 	@GetMapping("/removePerson")
-	public String getRemovePerson(Model model, Person person) {
+	public String getRemovePerson(Model model) {
+		p = new Person();
+		model.addAttribute("person", p);
 		return "removePerson";
 	}
 	@PostMapping("/removePerson")
 	public String postRemovePerson(Model model, Person person) {
 		System.out.println("PostRemovePerson");
 		ts.deletePerson(person.getPersonId());
-		
 		return "redirect:/confirmationNewPersonRemoved";
 	}
+	
+	//*****************************************************************************************************
+
 	@GetMapping("/searchForCourses")
 	public String getSearchForCourses(Model model) {
 		return "searchForCourses";
 	}
-	@GetMapping("/showAllCourses")
-	public String getShowAllCourses(Model model, Course course) {
-		courses = ts.getCs().findAllCourses();
+	
+	//*****************************************************************************************************
 
+	@GetMapping("/showAllCourses")
+	public String getShowAllCourses(Model model) {
+		courses = new ArrayList<Course>();
+		courses = ts.getCs().findAllCourses();
 		return "redirect:listCourse";
 	}
+	
+	//*****************************************************************************************************
+
 	@GetMapping("/listCourse")
-	public String getListCourse(Model model, Course course) {
+	public String getListCourse(Model model) {
 		model.addAttribute("courses", courses);
 		return "listCourse";
 	}
+	
+	//*****************************************************************************************************
+
 	@GetMapping("/findCourseById")
-	public String getFindCourseById(Model model, Course course) {
+	public String getFindCourseById(Model model) {
+		Course c = new Course();
+		model.addAttribute("course", c);
 		return "findCourseById";
 	}
+	
 	@PostMapping("/findCourseById")
-	public String PostFindCourseById(Model model, Course course) {
+	public String postFindCourseById(Model model, Course course) {
 		System.out.println("PostFindCourseById");
 		int id = Integer.parseInt(course.getCourseId());
 		System.out.println("Course id: " +id);
 		Course c = ts.getCs().findCourse(id);
+		courses = new ArrayList<Course>();
 		if (c != null) {
 			System.out.println("Course: " +c.getLongTitle());
-			courses.clear();
 			courses.add(c);
 			return "redirect:/listCourse";
 		} else {
@@ -205,18 +262,23 @@ public class AppController {
 			return "redirect:/generalErrorPage" ;
 		}
 	}
+	
+	//*****************************************************************************************************
+
 	@GetMapping("/findCourseByTitle")
-	public String getFindCourseByTitle(Model model, Course course) {
+	public String getFindCourseByTitle(Model model) {
+		Course c = new Course();
+		model.addAttribute("course", c);
 		return "findCourseByTitle";
 	}
 	@PostMapping("/findCourseByTitle")
-	public String PostFindCourseByTitle(Model model, Course course) {
+	public String postFindCourseByTitle(Model model, Course course) {
 		System.out.println("PostFindCourseByTitle");
 		String shortTitle = course.getShortTitle();
 		Course c = ts.getCs().findCourse(shortTitle);
+		courses = new ArrayList<Course>();
 		if (c != null) {
 		System.out.println("Course: " +c.getLongTitle());
-		courses.clear();
 		courses.add(c);
 		return "redirect:/listCourse";
 		} else {
@@ -225,6 +287,9 @@ public class AppController {
 		}
 			
 	}
+	
+	//*****************************************************************************************************
+
 	@GetMapping("/generalErrorPage")
 	public String getGeneralErrorPage(Model model) {
 		return "generalErrorPage";
@@ -233,5 +298,6 @@ public class AppController {
 	public String postGeneralErrorPage(Model model) {
 		return "redirect:" + redirector;
 	}
+	
 }	
 	
