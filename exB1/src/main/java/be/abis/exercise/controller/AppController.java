@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
@@ -99,11 +100,8 @@ public class AppController {
 	
 	@PostMapping("/changePassword")
 	public String postChangePassword(Model model, Person person) { // receive person object from model
-		System.out.println("postChangePassword model voor : " +model);
-		System.out.println("postChangePassword person voor : " +person);
 		try {
-		ts.changePassword(loginp, person.getPassword());
-		
+			ts.changePassword(loginp, person.getPassword());
 		} catch (IOException e) {
 			System.out.println("new password: " +person.getPassword());
 		}
@@ -123,20 +121,22 @@ public class AppController {
 	//*****************************************************************************************************
 		
 	@PostMapping("/searchPersonById") // receive person model from object
-	public String postSearchPersonById(Model model, Person person) {
+	public String postSearchPersonById(Model model, Person person, BindingResult bindingresult) {
 		System.out.println("postSearchPersons model voor : " +model);
 		System.out.println("postSearchPersons person voor : " +person);
 		System.out.println("person id: " +person.getPersonId());
-		persons = new ArrayList<Person>();
+		persons = new ArrayList<Person>();	
 		System.out.println("postSearchPersons persons na : " +persons);
 		int id = person.getPersonId();
 		p = ts.findPerson(id);
 		if (p != null) {
-		persons.add(p);
-		return "redirect:/listPerson";
+			persons.add(p);
+			return "redirect:/listPerson";
 		} else {
-			redirector = "/searchPersons";
-			return "redirect:/generalErrorPage";
+			bindingresult.reject("global", "Person not found");
+			return "searchPersons";
+			//redirector = "/searchPersons";
+			//return "redirect:/generalErrorPage";
 		}
 	}
 
@@ -253,7 +253,7 @@ public class AppController {
 	}
 	
 	@PostMapping("/findCourseById")
-	public String postFindCourseById(Model model, Course course) {
+	public String postFindCourseById(Model model, Course course, BindingResult bindingresult) {
 		System.out.println("PostFindCourseById");
 		int id = Integer.parseInt(course.getCourseId());
 		System.out.println("Course id: " +id);
@@ -264,8 +264,10 @@ public class AppController {
 			courses.add(c);
 			return "redirect:/listCourse";
 		} else {
-			redirector = "/findCourseById";
-			return "redirect:/generalErrorPage" ;
+			bindingresult.reject("global", "Course not found");
+			return "findCourseById";
+			//redirector = "/findCourseById";
+			//return "redirect:/generalErrorPage" ;
 		}
 	}
 	
@@ -279,18 +281,20 @@ public class AppController {
 	}
 	
 	@PostMapping("/findCourseByTitle")
-	public String postFindCourseByTitle(Model model, Course course) {
+	public String postFindCourseByTitle(Model model, Course course, BindingResult bindingresult) {
 		System.out.println("PostFindCourseByTitle");
 		String shortTitle = course.getShortTitle();
 		Course c = ts.getCs().findCourse(shortTitle);
 		courses = new ArrayList<Course>();
 		if (c != null) {
-		System.out.println("Course: " +c.getLongTitle());
-		courses.add(c);
-		return "redirect:/listCourse";
+			System.out.println("Course: " +c.getLongTitle());
+			courses.add(c);
+			return "redirect:/listCourse";
 		} else {
-			redirector = "/findCourseByTitle";
-			return "redirect:/generalErrorPage";
+			bindingresult.reject("global", "Course not found");
+			return "findCourseByTitle";
+			//redirector = "/findCourseByTitle";
+			//return "redirect:/generalErrorPage";
 		}	
 	}
 	

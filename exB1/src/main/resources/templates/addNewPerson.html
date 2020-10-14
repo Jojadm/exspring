@@ -18,7 +18,8 @@
 			<td>Last name:</td>
 			<td><input type="text" th:field="*{lastName}" /></td></tr> 
 			<td>Age:</td>
-			<td><input type="text" th:field="*{age}" /></td></tr> 
+			<td><input type="text" th:field="*{age}" /></td>
+			<td><span style="color:red" th:errors="*{age}"></span></td></tr> 
 			<td>Email address:</td>
 			<td><input type="text" th:field="*{emailAddress}" /></td>
 			<td><span style="color:red" th:errors="*{emailAddress}"></span></td></tr>

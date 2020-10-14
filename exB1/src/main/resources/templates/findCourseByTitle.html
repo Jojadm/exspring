@@ -8,6 +8,7 @@
 	
 	
 	<form action="#" th:action="@{/findCourseByTitle}" th:object="${course}" method="post">
+	<div><span style="color:red" th:errors=*{global}></span></div>
 	<table>
 		<tr>
 			<td>Course short title: </td>
