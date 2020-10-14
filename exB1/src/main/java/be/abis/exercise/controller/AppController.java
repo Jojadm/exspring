@@ -12,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import be.abis.exercise.model.Course;
 import be.abis.exercise.model.Person;
@@ -48,7 +47,7 @@ public class AppController {
 	}
 		
 	@PostMapping("/login") // receive person object from model
-	public String postLogin(Model model, Person person) { 
+	public String postLogin(Model model, Person person, BindingResult bindingresult) { 
 		System.out.println("postLogin model : " +model);
 		System.out.println("postLogin person pw: " +person.getPassword());
 		System.out.println("postLogin person name: " +person.getFirstName());
@@ -60,8 +59,11 @@ public class AppController {
 			System.out.println("postLogin loginp tostring: " +loginp.toString());
 			return "redirect:/welcome";
 		} else {
-			redirector = "/login";
-			return "redirect:/generalErrorPage";
+			System.out.println("login not correct");
+			bindingresult.reject("global", "Login incorrect. Try again");
+			return "login";
+			//redirector = "/login";
+			//return "redirect:/generalErrorPage";
 		}
 	}
 	

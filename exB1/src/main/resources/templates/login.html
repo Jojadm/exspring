@@ -13,17 +13,21 @@
 	 	  Selection expressions are just like variable expressions, except they will be executed 
 	 	  on a previously selected object instead of the whole context variables map.
 	 	  The object they act on is specified by a th:object attribute
+	 	  <div><span style="color:red" "th:errors="*.{global}"></div>
 	-->
 	<form action="#" th:action="@{/login}" 
 		th:object="${person}" method="post"> 
-	<table>
+		<div><span style="color:red" th:errors="*{global}"></span></div>
+		<br>
+		<table>
 		<tr>
 			<td>Emailaddress:</td>
-			<td><input type="text" th:field="*{emailAddress}" /></td> </tr> 
+			<td><input type="text" th:field="*{emailAddress}" /></td></tr> 
 			<td>password:</td>
 			<td><input type="password" th:field="*{password}" /></td></tr> 
-	 </table>
-	<input type="submit" value="Login"/> 
+	 	</table>
+	 	<input type="submit" value="Login"/> 
+	 	
 	</form>
 </body>
 </html>
