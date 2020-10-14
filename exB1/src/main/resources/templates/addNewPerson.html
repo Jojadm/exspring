@@ -8,6 +8,7 @@
 	
 	<form action="#" th:action="@{/addNewPerson}" 
 		th:object="${person}" method="post">
+	<div><span style="color:red" th:errors="*{global}"></span></div>
 	<table>
 		<tr>
 			<td>Person id:</td>

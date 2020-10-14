@@ -6,6 +6,7 @@
 <body>
 	<h1>Remove a person</h1>
 	<form action="#" th:action="@{/removePerson}" th:object="${person}" method="post">
+	<div><span style="color:red" th:errors="*{global}"></span></div>
 	<table>
 		<tr>
 			<td>Person id: </td>

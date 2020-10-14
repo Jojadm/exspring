@@ -12,10 +12,10 @@ public class Person {
 	@NotBlank(message="Please enter first name")
 	private String firstName;
 	private String lastName;
-	@Min(18)
+	@Min(value=18, message="Age must be 18+")
 	private int age;
 	@NotBlank(message="Please enter email address")
-	@Email
+	@Email(message="Email is not valid")
 	private String emailAddress;
 	@NotBlank(message="Please enter password")
 	@Size(min=6, message="Password must be minimum 6 characters long")

@@ -10,6 +10,7 @@ import java.util.Iterator;
 
 import org.springframework.stereotype.Repository;
 
+import be.abis.exercise.exception.PersonAlreadyExistsException;
 import be.abis.exercise.model.Address;
 import be.abis.exercise.model.Company;
 import be.abis.exercise.model.Person;
@@ -106,7 +107,7 @@ public class FilePersonRepository implements PersonRepository {
 	}
 
 	@Override
-	public void addPerson(Person p) throws IOException {
+	public void addPerson(Person p) throws IOException, PersonAlreadyExistsException {
 		boolean b = false;
 		this.readFile();
 		Iterator<Person> iter = allPersons.iterator();
@@ -114,7 +115,7 @@ public class FilePersonRepository implements PersonRepository {
 		while (iter.hasNext()) {
 			Person pers = iter.next();
 			if (pers.getEmailAddress().equalsIgnoreCase(p.getEmailAddress())) {
-				throw new IOException("you were already registered, login please");
+				throw new PersonAlreadyExistsException("you were already registered, login please");
 			} else {
 				b = true;
 			}

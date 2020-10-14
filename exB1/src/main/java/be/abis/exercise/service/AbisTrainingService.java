@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import be.abis.exercise.exception.EnrollException;
+import be.abis.exercise.exception.PersonAlreadyExistsException;
 import be.abis.exercise.model.Course;
 import be.abis.exercise.model.Person;
-import be.abis.exercise.repository.CourseRepository;
 import be.abis.exercise.repository.PersonRepository;
 
 @Service
@@ -48,7 +48,7 @@ public class AbisTrainingService implements TrainingService {
 	}
 
 	@Override
-	public void addPerson(Person p) throws IOException {
+	public void addPerson(Person p) throws IOException, PersonAlreadyExistsException {
 		// TODO Auto-generated method stub
 		pr.addPerson(p);
 	}

@@ -10,10 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import be.abis.exercise.exception.PersonAlreadyExistsException;
 import be.abis.exercise.model.Course;
 import be.abis.exercise.model.Person;
 import be.abis.exercise.service.TrainingService;
@@ -173,11 +173,14 @@ public class AppController {
 			return "addNewPerson";
 		}
 		try {
-		System.out.println("person: " +person.getFirstName());	
-		ts.addPerson(person);
+			System.out.println("person: " +person.getFirstName());	
+			ts.addPerson(person);
 		} catch (IOException e) {
 			redirector = "/addNewPerson";
 			return "redirect:/generalErrorPage";
+		} catch (PersonAlreadyExistsException pe) {
+			bindingresult.reject("global", "Person already exists");
+			return "addNewPerson";
 		}
 		return "redirect:/confirmationNewPersonAdded";
 	}
@@ -213,10 +216,25 @@ public class AppController {
 		return "removePerson";
 	}
 	@PostMapping("/removePerson")
-	public String postRemovePerson(Model model, Person person) {
+	public String postRemovePerson(Model model, Person person, BindingResult bindingresult) {
 		System.out.println("PostRemovePerson");
-		ts.deletePerson(person.getPersonId());
-		return "redirect:/confirmationNewPersonRemoved";
+		p = ts.findPerson(person.getPersonId());
+		if (p != null) {
+			System.out.println("p: " +p);
+			System.out.println("loginp: " +loginp);
+			if (p.getPersonId() == loginp.getPersonId()) {
+				bindingresult.reject("global", "You can not remove yourself ;-)");
+				return "removePerson";
+			} else {
+				//ts.deletePerson(person.getPersonId());
+				return "redirect:/confirmationNewPersonRemoved";
+			}
+		} else { 
+			bindingresult.reject("global", "Person not found");
+			return "removePerson";
+			//redirector = "/searchPersons";
+			//return "redirect:/generalErrorPage";
+		} 
 	}
 	
 	//*****************************************************************************************************
