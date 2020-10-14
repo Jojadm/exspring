@@ -1,14 +1,21 @@
 package be.abis.exercise.model;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+
 public class Person {
 	
 	private int personId;
+	@NotBlank(message="Please enter first name")
 	private String firstName;
 	private String lastName;
 	private int age;
+	@NotBlank(message="Please enter email address")
 	private String emailAddress;
+	@NotBlank(message="Please enter password")
 	private String password;
 	private String language;
+	@Valid
 	private Company company;
 	
 	
@@ -66,7 +73,8 @@ public class Person {
 	
 	@Override
 	public String toString() {
-		return "Person with id " + personId + ", " + firstName + " "+ lastName + ", works for " +company.getName() + " in " + company.getAddress().getTown();
+		return "Person with id " + personId + ", " + firstName + " "+ lastName + " " + age + " " + emailAddress + " " + password; 
+		//return "Person with id " + personId + ", " + firstName + " "+ lastName + ", works for " +company.getName() + " in " + company.getAddress().getTown();
 	}
 
 	

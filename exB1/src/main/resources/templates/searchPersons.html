@@ -5,7 +5,7 @@
 </head>
 <body>
 	<h1>Search persons</h1>
-	<form action="#" th:action="@{/searchPersons}" th:object="${person}" method="post">
+	<form action="#" th:action="@{/searchPersonById}" th:object="${person}" method="post">
 	<table>
 		<tr>
 			<td>Person id: </td>
@@ -17,7 +17,7 @@
 	<form action="#" th:action="@{/searchAllPersons}" method="get">
 		<input type="submit" value="All"/> 
 	</form>
-	<form action="#" th:action="@{/personAdmin}" method="post">
+	<form action="#" th:action="@{/personAdmin}" method="get">
 		<input type="submit" value="Back"/> 
 	</form>
 </body>

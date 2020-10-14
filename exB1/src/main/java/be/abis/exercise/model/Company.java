@@ -1,10 +1,15 @@
 package be.abis.exercise.model;
 
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+
 public class Company{
 	
+	@NotBlank(message="Please enter company name")
 	private String name;
 	private String telephoneNumber;
 	private String vatNr;
+	@Valid
 	private Address address;
 		
 	public String getName() {

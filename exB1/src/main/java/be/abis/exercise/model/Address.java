@@ -1,8 +1,11 @@
 package be.abis.exercise.model;
 
+import javax.validation.constraints.NotBlank;
+
 public class Address {
 	
 	private String street;
+	@NotBlank(message="Please enter town")
 	private String town;
 	private String zipcode;
 	private int nr;

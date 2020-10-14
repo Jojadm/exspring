@@ -13,14 +13,15 @@
 			<td>Person id:</td>
 			<td><input type="text" th:field="*{personId}" /></td></tr>
 			<td>First name:</td>
-			<td><input type="text" th:field="*{firstName}" /></td> </tr> 
+			<td><input type="text" th:field="*{firstName}" /></td> 
+			<td><span style="color:red" th:errors="*{firstName}"></span></td></tr>
 			<td>Last name:</td>
 			<td><input type="text" th:field="*{lastName}" /></td></tr> 
 			<td>Age:</td>
 			<td><input type="text" th:field="*{age}" /></td></tr> 
 			<td>Email address:</td>
-			<td><input type="text" th:field="*{emailAddress}" /></td></tr> 
-			
+			<td><input type="text" th:field="*{emailAddress}" /></td>
+			<td><span style="color:red" th:errors="*{emailAddress}"></span></td></tr>
 			
 			<td>Language:</td>
            	<td><select name="languages" id="languages" th:field="*{language}">
@@ -30,10 +31,12 @@
 			</select></td></tr>
       					 
 			<td>Choose a password:</td>
-			<td><input type="password" th:field="*{password}" /></td></tr> 
+			<td><input type="password" th:field="*{password}" /></td> 
+			<td><span style="color:red" th:errors="*{password}"></span></td></tr>
 			<td>Company</td></tr>
 			<td>	Company name:</td>
-			<td><input type="text" th:field="*{company.name}" /></td> </tr> 
+			<td><input type="text" th:field="*{company.name}" /></td> 
+			<td><span style="color:red" th:errors="*{company.name}"></span></td></tr>
 			<td>	Telephone number:</td>
 			<td><input type="text" th:field="*{company.telephoneNumber}" /></td> </tr> 
 			<td>	VAT number:</td>
@@ -46,11 +49,12 @@
 			<td>	Zipcode:</td>
 			<td><input type="text" th:field="*{company.address.zipcode}" /></td> </tr>  
 			<td>	Town:</td>
-			<td><input type="text" th:field="*{company.address.town}" /></td> </tr> 
+			<td><input type="text" th:field="*{company.address.town}" /></td>
+			<td><span style="color:red" th:errors="*{company.address.town}"></span></td></tr> 
 	 </table>
 	<input type="submit" value="Submit"/> 
 	</form>
-	<form action="#" th:action="@{/personAdmin}" method="post">
+	<form action="#" th:action="@{/personAdmin}" method="get">
 		<input type="submit" value="Back"/> 
 	</form>
 </body>
